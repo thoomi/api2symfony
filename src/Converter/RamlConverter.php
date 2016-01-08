@@ -76,15 +76,18 @@ class RamlConverter implements ConverterInterface
             if ($method->getResponses()) {
                 foreach ($method->getResponses() as $code => $response) {
                     $headers = array();
-                    foreach ($response->getHeaders() as $key => $value) {
-                        if (isset($value['required']) && $value['required']) {
-                            $headers[$key] = isset($value['example']) ? $value['example'] : '';
+                    if ($response->getHeaders()) {
+                        foreach ($response->getHeaders() as $key => $value) {
+                            if ($value->isRequired()) {
+                                $headers[$key] = $value->getExample() ? $value->getExample() : '';
+                            }
                         }
                     }
+                    
                     $_response = new SymfonyResponse($code, $headers);
                     foreach ($this->config['allowed_response_types'] as $allowedResponsetype) {
-                        if (null !== $example = $response->getExampleByType($allowedResponsetype)) {
-                            $_response->addContent(new SymfonyResponseContent($allowedResponsetype, str_replace(array("\r\n", "\n", "\r", "\t", "  "), '', $example)));
+                        if (null !== $example = $response->getBodyByType($allowedResponsetype)) {
+                            $_response->addContent(new SymfonyResponseContent($allowedResponsetype, str_replace(array("\r\n", "\n", "\r", "\t", "  "), '', $example->getExample())));
                         }
                     }
                     $action->addResponse($_response);
@@ -132,6 +135,10 @@ class RamlConverter implements ConverterInterface
 
         if ($def->getResources()) {
             foreach ($def->getResources() as $resource) {
+
+                // Prepare display name
+                $displayName = str_replace('/', '', $resource->getDisplayName());
+                $resource->setDisplayName($displayName);
 
                 $controller = new SymfonyController(ucfirst($resource->getDisplayName()) . 'Controller', $namespace, $resource->getDescription());
                 $this->addActions($controller, $resource);

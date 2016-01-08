@@ -20,12 +20,12 @@
         }
     ],
     "require": {
-        "alecsammon/php-raml-parser": "0.6.3",
-        "symfony/twig-bundle": "~2.6",
-        "symfony/filesystem": "~2.6"
+        "alecsammon/php-raml-parser": "2.1.*",
+        "symfony/twig-bundle": "3.0.*",
+        "symfony/filesystem": "3.0.*"
     },
     "require-dev": {
-        "phpunit/phpunit": "4.*"
+        "phpunit/phpunit": "5.*"
     },
     "autoload": {
         "psr-4": {
