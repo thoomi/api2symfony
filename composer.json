@@ -20,7 +20,7 @@
         }
     ],
     "require": {
-        "alecsammon/php-raml-parser": "2.1.*",
+        "thoomi/php-raml-parser": "dev-master",
         "symfony/twig-bundle": "3.0.*",
         "symfony/filesystem": "3.0.*"
     },
@@ -36,5 +36,11 @@
         "psr-4": {
             "Creads\\Tests\\": "tests/"
         }
-    }
+    },
+  "repositories": [
+      {
+          "url": "https://github.com/thoomi/php-raml-parser.git",
+          "type": "git"
+      }
+  ]
 }
